@@ -14,12 +14,22 @@ class TasksController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        $tasks = Task::all();
+    {   
+      
+        if (\Auth::check()) { // 認証済みの場合
+            // 認証済みユーザを取得
+            $user = \Auth::user();
+            // ユーザの投稿の一覧を取得
+            $tasks = $user->tasks()->get();
         
+          
         return view('tasks.index',[
             'tasks' => $tasks,
-            ]);
+            ]);  
+        }else{
+            return view('dashboard');
+        }
+        
             
         
     }
@@ -32,9 +42,10 @@ class TasksController extends Controller
     public function create()
     {
         $task = new Task;
-        
+        $user = \Auth::user();
         return view('tasks.create', [
             'task' => $task,
+            'user'=> $user,
             ]);
     }
 
@@ -51,11 +62,12 @@ class TasksController extends Controller
             'status' => 'required|max:10',
             'content' => 'required|max:255',
             ]);
+
+        $request->user()->tasks()->create([
+            'content' => $request->content,
+            'status' => $request->status,
+        ]);
         
-        $task = new task;
-        $task->status = $request->status;
-        $task->content = $request->content;
-        $task->save();
         
         return redirect('/');
     }
@@ -67,11 +79,14 @@ class TasksController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
-    {
+    {   
+        $user = \Auth::user();
+        
         $task = Task::findOrFail($id);
         
         return view('tasks.show',[
             'task' => $task,
+            'user' => $user,
             ]);
     }
 
@@ -121,9 +136,15 @@ class TasksController extends Controller
      */
     public function destroy($id)
     {
-        $task = Task::findOrFail($id);
-        $task->delete();
+        // idの値で投稿を検索して取得
+        $task = \App\Models\Task::findOrFail($id);
         
-        return redirect('/');
+        // 認証済みユーザ（閲覧者）がその投稿の所有者である場合は投稿を削除
+        if (\Auth::id() === $task->user_id) {
+            $task->delete();
+            return redirect('/');
+        }
+
+       
     }
 }
