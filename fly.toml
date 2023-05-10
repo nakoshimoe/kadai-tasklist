@@ -1,9 +1,9 @@
-# fly.toml app configuration file generated for dry-star-3333 on 2023-04-27T07:13:52Z
+# fly.toml app configuration file generated for green-butterfly-4144 on 2023-05-09T03:12:06Z
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = "dry-star-3333"
+app = "green-butterfly-4144"
 primary_region = "nrt"
 
 [build]
@@ -16,11 +16,11 @@ primary_region = "nrt"
   LOG_CHANNEL = "stderr"
   LOG_LEVEL = "info"
   LOG_STDERR_FORMATTER = "Monolog\\Formatter\\JsonFormatter"
-  APP_URL = "https://dry-star-3333.fly.dev"
+  APP_URL = "https:green-butterfly-4144.fly.dev"
   APP_NAME = "Laravel"
   APP_DEBUG = false
   DB_CONNECTION = "pgsql"
-  DB_HOST = "db.qvhpfagheenkicxwxabz.supabase.co"
+  DB_HOST = "db.rtqzdlngekpqlcflxtsr.supabase.co"
   DB_PORT = 5432
   DB_DATABASE = "postgres"
   DB_USERNAME = "postgres"
