@@ -106,13 +106,9 @@ class TasksController extends Controller
     {
         $task = Task::findOrFail($id);
         
-        if($task->user->id !== $user->id){
-            return redirect('/');
-        }else{
         return view('tasks.edit',[
             'task' => $task,
             ]);
-        }
     }
 
     /**
